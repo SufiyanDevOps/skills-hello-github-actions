@@ -1,0 +1,28 @@
+name: Artifact Test
+
+on:
+  push:
+    branches:
+      - main
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hello, world!" > hello.txt
+      - uses: actions/upload-artifact@v3
+        with:
+          name: hello.txt
+          path: hello.txt
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: hello.txt
+          path: hello.txt
+      - run: cat hello.txt
+
